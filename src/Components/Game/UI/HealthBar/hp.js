@@ -4,16 +4,17 @@ import { connect } from "react-redux";
 import "./styles.css";
 
 setInterval(function () {
-    const hp = store.getState().player.hp;
-    const maxhp = store.getState().player.maxhp;
-    const HP = (hp / maxhp);
-    const percHP = HP * 100;
-    store.dispatch({
-        type: "move_Player",
-        payload: {
-            percHP: percHP
-        }
-    })
+  const hp = store.getState().player.hp;
+  const maxhp = store.getState().player.maxhp;
+  const HP = hp / maxhp;
+  const percHP = HP * 100;
+  store.dispatch({
+    type: "move_Player",
+    payload: {
+      percHP: percHP,
+    },
+  });
+}, 200);
 
 function HealthBar(props) {
   const percHP = store.getState().player.percHP;
