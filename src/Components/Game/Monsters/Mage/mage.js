@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useEffect } from "react";
 //this import connects the store to our component (Mage)
 import { connect } from "react-redux";
 import mageSpriteLeft from "./Assets/mageLeft.gif";
@@ -6,34 +6,43 @@ import mageSpriteRight from "./Assets/mageRight.gif";
 import mageAttackLeft from "./Assets/mageAttackLeft.gif";
 import mageAttackRight from "./Assets/mageAttackRight.gif";
 import move from "./move";
-import store from "../../../../Config/store";
+import store from "../../../../Config/store"
 
 let hasLoaded = 0;
 
 function Mage(props) {
-  if (hasLoaded < 2 && props.pos) {
-    hasLoaded += 1;
-    store.dispatch({
-      type: "set_Pos",
-      payload: {
-        position: props.pos,
-      },
-    });
-  }
-
-  function pickSprite(props) {
-    const playerPos = store.getState().player.position;
-    const magePos = store.getState().mage.position;
-    if (props.attacking) {
-      if (props.direction == "West") {
-        return mageAttackLeft;
-      } else if (props.direction == "East") {
-        return mageAttackRight;
-      } else if (props.direction == "North" || props.direction == "South") {
-        if (playerPos[0] < magePos[0]) {
-          return mageAttackLeft;
-        } else {
-          return mageAttackRight;
+    useEffect(() => {
+        if ((hasLoaded < 2) && props.pos) {
+            hasLoaded += 1;
+            return () => {
+                store.dispatch({
+                    type: "set_Pos",
+                    payload: {
+                        position: props.pos
+                    }
+                })
+            }
+        }
+    })
+    
+    function pickSprite(props) {
+        const playerPos = store.getState().player.position
+        const magePos = store.getState().mage.position
+        if (props.attacking) {
+            if (props.direction == "West") {
+                return mageAttackLeft
+            }
+            else if (props.direction == "East") {
+                return mageAttackRight
+            }
+            else if (props.direction == "North"  || props.direction == "South"){
+                if (playerPos[0] < magePos[0]) {
+                    return mageAttackLeft
+                } 
+                else {
+                    return mageAttackRight
+                }
+            }
         }
       }
     } else {

@@ -5,52 +5,54 @@ import React from "react";
 
 export default function move(monster) {
   const path = window.location.href.split("/");
-  if (path[3] === "game") {
-    let interval = setInterval(function () {
-      const currentCD = store.getState().mage.currentCD;
-      const dir = store.getState().mage.direction;
-      const locked = store.getState().mage.locked;
-      const hp = store.getState().mage.hp;
-      const newMageInfo = checkMove(dir);
-      // checkAttack();
-      checkSight();
+
+  let interval = setInterval(function () {
+    const currentCD = store.getState().mage.currentCD;
+    const dir = store.getState().mage.direction;
+    const locked = store.getState().mage.locked;
+    const hp = store.getState().mage.hp;
+    const newMageInfo = checkMove(dir);
+    // checkAttack();
+    checkSight();
+    store.dispatch({
+      type: "INCREMENT_TIMER",
+    });
+    if (locked) {
       store.dispatch({
-        type: "INCREMENT_TIMER",
+        type: "move_Mage",
+        payload: newMageInfo,
       });
-      if (locked) {
-        store.dispatch({
-          type: "move_Mage",
-          payload: newMageInfo,
-        });
-      }
-      if (store.getState().mage.attacking) {
-        store.dispatch({
-          type: "move",
-          payload: {
-            isLive: true,
-          },
-        });
-      }
-      if (hp == 0) {
-        store.dispatch({
-          type: "move",
-          payload: {
-            position: [10000000, 10000000],
-          },
-        });
-        store.dispatch({
-          type: "move_Mage",
-          payload: {
-            position: [10000000, 100000000],
-          },
-        });
-        clearInterval(interval);
-      }
-    }, 400);
-  }
+    }
+    if (store.getState().mage.attacking) {
+      store.dispatch({
+        type: "move",
+        payload: {
+          isLive: true,
+        },
+      });
+    }
+    if (hp == 0) {
+      store.dispatch({
+        type: "move",
+        payload: {
+          position: [10000000, 10000000],
+        },
+      });
+      store.dispatch({
+        type: "move_Mage",
+        payload: {
+          position: [10000000, 100000000],
+        },
+      });
+      clearInterval(interval);
+    }
+  }, 400);
+
   //gets new position for the mage if he is moving
   function getNewPosition(oldPos, direction) {
     switch (direction) {
+      default:
+        return "";
       case "West":
         return [oldPos[0] - spriteSize, oldPos[1]];
 
@@ -67,6 +69,8 @@ export default function move(monster) {
   //gets new position for the mage if he is dashing
   function getNewPositionDash(oldPos, direction) {
     switch (direction) {
+      default:
+        return "";
       case "West":
         return [oldPos[0] - 2 * spriteSize, oldPos[1]];
 
@@ -150,7 +154,6 @@ export default function move(monster) {
 
   //moving function for the mage
   function checkMove(direction) {
-    console.log("this is working");
     const oldPos = store.getState().mage.position;
     const playerPos = store.getState().player.position;
     const magePos = store.getState().mage.position;

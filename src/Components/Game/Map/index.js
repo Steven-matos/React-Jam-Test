@@ -58,7 +58,7 @@ function MapRow(props) {
             height: spriteSize
         }}>
         {
-            props.tiles.map(tile => <MapTile tile={tile} />)
+            props.tiles.map((tile, index) => <MapTile key={index} tile={tile} />)
         }
     </div>
 }
@@ -80,7 +80,7 @@ function Map(props) {
             }}
         >
             {
-                props.map.tiles.map(row => <MapRow tiles={row} />)
+                props.map.tiles.map((row, index) => <MapRow key={index} tiles={row} />)
             }
             {props.mage.isAlive ? <Mage pos={[240, 40]} /> : " "}
             {props.mage2.isAlive ? <Mage2 pos={[120, 600]} /> : " "}
