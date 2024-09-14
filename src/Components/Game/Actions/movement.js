@@ -5,6 +5,7 @@ import store from "../../../Config/store";
 export function getNewPosition(oldPos, direction) {
         
     switch (direction) {
+        default: return ""
         case "West":
             return [oldPos[0] - spriteSize, oldPos[1]]
         case "East":
@@ -35,6 +36,7 @@ export function observeObstacles(newPos) {
 export function getNewPositionDash(oldPos, direction) {
 
     switch (direction) {
+      default: return ""
       case "West":
         return [oldPos[0] - (2 * spriteSize), oldPos[1]]
 

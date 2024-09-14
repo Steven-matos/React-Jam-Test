@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useEffect } from "react";
 //this import connects the store to our component (Mage)
 import { connect } from "react-redux";
 import mageSpriteLeft from "./Assets/mageLeft.gif";
@@ -10,19 +10,22 @@ import store from "../../../../Config/store"
 
 let hasLoaded = 0;
 
-function Mage2(props)  {
-    console.log(props.pos)
-    if((hasLoaded < 2) && props.pos) {
-        console.log("test")
-        hasLoaded += 1;
-        store.dispatch({
-            type: "set_Pos2",
-            payload: {
-                position: props.pos
+function Mage2(props) {
+    useEffect(() => {
+        if ((hasLoaded < 2) && props.pos) {
+            hasLoaded += 1;
+            return () => {
+                store.dispatch({
+                    type: "set_Pos2",
+                    payload: {
+                        position: props.pos
+                    }
+                })
             }
-        })
-    }
-    
+        }
+    })
+
+
     function pickSprite(props) {
         const playerPos = store.getState().player.position
         const magePos = store.getState().mage2.position
@@ -33,10 +36,10 @@ function Mage2(props)  {
             else if (props.direction == "East") {
                 return mageAttackRight
             }
-            else if (props.direction == "North"  || props.direction == "South"){
+            else if (props.direction == "North" || props.direction == "South") {
                 if (playerPos[0] < magePos[0]) {
                     return mageAttackLeft
-                } 
+                }
                 else {
                     return mageAttackRight
                 }
@@ -49,10 +52,10 @@ function Mage2(props)  {
             else if (props.direction == "East") {
                 return mageSpriteRight
             }
-            else if (props.direction == "North"  || props.direction == "South"){
+            else if (props.direction == "North" || props.direction == "South") {
                 if (playerPos[0] < magePos[0]) {
                     return mageSpriteLeft
-                } 
+                }
                 else {
                     return mageSpriteRight
                 }
@@ -62,18 +65,18 @@ function Mage2(props)  {
 
     return (
         //Styling for Mage sprite that cuts the initial sprite from the sprite tile
-        <div 
+        <div
             style={{
                 key: "mage2",
                 position: "absolute",
                 top: props.position[1],
-                left: props.position[0] ,
+                left: props.position[0],
                 backgroundImage: `url('${pickSprite(props)}')`,
                 width: "40px",
                 height: "40px",
             }}
         >
-        
+
         </div>
     )
 }

@@ -5,62 +5,58 @@ import React from "react";
 
 export default function move(monster) {
 
-  
+
 
   const path = window.location.href.split("/")
-  console.log(path)
-  if (path[3] === "game") {
-    let interval = setInterval(function () {
-      const currentCD = store.getState().mage.currentCD
-      const dir = store.getState().mage.direction
-      const locked = store.getState().mage.locked
-      const hp = store.getState().mage.hp
-      console.log("locked is " + locked)
-      console.log(dir)
-      const newMageInfo = checkMove(dir)
-      console.log('increment timer')
-      console.log(checkMove(dir))
-      // checkAttack();
-      checkSight()
-      store.dispatch({
-        type: 'INCREMENT_TIMER'
-      })
-      if (locked) {
-        store.dispatch({
-          type: "move_Mage",
-          payload: newMageInfo
 
-        })
-      }
-      if (store.getState().mage.attacking) {
-        store.dispatch({
-          type: "move",
-          payload: {
-            isLive: true
-          }
-        })
-      }
-      if (hp == 0) {
-        store.dispatch({
-          type: "move",
-          payload: {
-            position: [10000000, 10000000]
-          }
-        })
-        store.dispatch({
-          type: "move_Mage",
-          payload: {
-            position: [10000000, 100000000]
-          }
-        })
-        clearInterval(interval)
-      }
-    }, 400)
-  }
+  let interval = setInterval(function () {
+    const currentCD = store.getState().mage.currentCD
+    const dir = store.getState().mage.direction
+    const locked = store.getState().mage.locked
+    const hp = store.getState().mage.hp
+    const newMageInfo = checkMove(dir)
+    // checkAttack();
+    checkSight()
+    store.dispatch({
+      type: 'INCREMENT_TIMER'
+    })
+    if (locked) {
+      store.dispatch({
+        type: "move_Mage",
+        payload: newMageInfo
+
+      })
+    }
+    if (store.getState().mage.attacking) {
+      store.dispatch({
+        type: "move",
+        payload: {
+          isLive: true
+        }
+      })
+    }
+    if (hp == 0) {
+      store.dispatch({
+        type: "move",
+        payload: {
+          position: [10000000, 10000000]
+        }
+      })
+      store.dispatch({
+        type: "move_Mage",
+        payload: {
+          position: [10000000, 100000000]
+        }
+      })
+      clearInterval(interval)
+    }
+  }, 400)
+
   //gets new position for the mage if he is moving
   function getNewPosition(oldPos, direction) {
 
     switch (direction) {
+      default: return ""
       case "West":
         return [oldPos[0] - spriteSize, oldPos[1]]
 
@@ -78,6 +74,7 @@ export default function move(monster) {
   function getNewPositionDash(oldPos, direction) {
 
     switch (direction) {
+      default: return ""
       case "West":
         return [oldPos[0] - (2 * spriteSize), oldPos[1]]
 
@@ -161,7 +158,6 @@ export default function move(monster) {
 
   //moving function for the mage
   function checkMove(direction) {
-    console.log("this is working")
     const oldPos = store.getState().mage.position
     const playerPos = store.getState().player.position
     const magePos = store.getState().mage.position
@@ -171,13 +167,10 @@ export default function move(monster) {
 
     //checks  if player y pos is equal to mage y pos
     if (playerPos[1] != magePos[1]) {
-      console.log("hey")
       //moves mage down if player is below
       if (playerPos[1] > magePos[1]) {
-        console.log("below")
         const newPos = getNewPosition(oldPos, "South");
         if (observeBoundaries(oldPos, newPos) && observeObstacles(oldPos, newPos)) {
-          console.log("below2")
           return {
             position: [magePos[0], magePos[1] + spriteSize],
             direction: "South"
@@ -193,7 +186,6 @@ export default function move(monster) {
         console.log("above")
         const newPos = getNewPosition(oldPos, "North");
         if (observeBoundaries(oldPos, newPos) && observeObstacles(oldPos, newPos)) {
-          console.log("above2")
           return {
             position: [magePos[0], magePos[1] - spriteSize],
             direction: "North"
@@ -285,18 +277,16 @@ export default function move(monster) {
     }
     else {
       if (currentCD == 0) {
-        console.log("attack!!!")
         return (
           {
-          position: magePos,
-          direction,
-          currentCD: 1,
-          attacking: true,
-        }
+            position: magePos,
+            direction,
+            currentCD: 1,
+            attacking: true,
+          }
         )
       }
       else if (currentCD !== 0 && currentCD !== maxCD) {
-        console.log("Attack is on cd")
         const newCD = currentCD + 1;
         return {
           position: magePos,
@@ -306,7 +296,6 @@ export default function move(monster) {
         }
       }
       else if (currentCD == maxCD) {
-        console.log("CD reset")
         return {
           position: magePos,
           direction,

@@ -8,7 +8,6 @@ setInterval(function () {
     const maxhp = store.getState().player.maxhp;
     const HP = (hp / maxhp);
     const percHP = HP * 100;
-    console.log(percHP)
     store.dispatch({
         type: "move_Player",
         payload: {

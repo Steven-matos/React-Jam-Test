@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useEffect } from "react";
 //this import connects the store to our component (Mage)
 import { connect } from "react-redux";
 import mageSpriteLeft from "./Assets/mageLeft.gif";
@@ -7,24 +7,23 @@ import mageAttackLeft from "./Assets/mageAttackLeft.gif";
 import mageAttackRight from "./Assets/mageAttackRight.gif";
 import move from "./move";
 import store from "../../../../Config/store"
-import player from "../../Player/player";
-import Fireball from "../Attacks/Fireball/fireball"
-import {spriteSize} from "../../../../Config/constants"
 
 let hasLoaded = 0;
 
-function Mage3(props)  {
-    console.log(props.pos)
-    if((hasLoaded < 2) && props.pos) {
-        console.log("test")
-        hasLoaded += 1;
-        store.dispatch({
-            type: "set_Pos3",
-            payload: {
-                position: props.pos
+function Mage3(props) {
+    useEffect(() => {
+        if ((hasLoaded < 2) && props.pos) {
+            hasLoaded += 1;
+            return () => {
+                store.dispatch({
+                    type: "set_Pos3",
+                    payload: {
+                        position: props.pos
+                    }
+                })
             }
-        })
-    }
+        }
+    })
     
     function pickSprite(props) {
         const playerPos = store.getState().player.position

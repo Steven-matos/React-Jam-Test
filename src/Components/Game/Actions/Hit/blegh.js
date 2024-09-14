@@ -46,11 +46,6 @@ export default function actions(projectile) {
         const hp = store.getState().mage.hp
         const newHp = hp - ad;
         const live = store.getState().mage.isAlive
-        console.log("mage hp: " + newHp)
-        console.log("OG mage hp: " + hp)
-        console.log("player ad: " + ad)
-        console.log("mage pos: " + mPos)
-        console.log("hit pos: " + hPos)
         if (mPos[0] == hPos[0] && mPos[1] == hPos[1]) {
             store.dispatch({
                 type: "move_Mage",
@@ -92,11 +87,6 @@ export default function actions(projectile) {
         const hp = store.getState().mage2.hp
         const newHp = hp - ad;
         const live = store.getState().mage2.isAlive
-        console.log("mage hp: " + newHp)
-        console.log("OG mage hp: " + hp)
-        console.log("player ad: " + ad)
-        console.log("mage pos: " + mPos)
-        console.log("hit pos: " + hPos)
         if (mPos[0] == hPos[0] && mPos[1] == hPos[1]) {
             store.dispatch({
                 type: "move_Mage2",
@@ -139,11 +129,6 @@ export default function actions(projectile) {
         const hp = store.getState().mage3.hp
         const newHp = hp - ad;
         const live = store.getState().mage3.isAlive
-        console.log("mage hp: " + newHp)
-        console.log("OG mage hp: " + hp)
-        console.log("player ad: " + ad)
-        console.log("mage pos: " + mPos)
-        console.log("hit pos: " + hPos)
         if (mPos[0] == hPos[0] && mPos[1] == hPos[1]) {
             store.dispatch({
                 type: "move_Mage3",
@@ -202,7 +187,6 @@ export default function actions(projectile) {
         const locked = store.getState().hit
         if (locked) {
             if (currentCD == 0) {
-                console.log("attack!!!")
                 store.dispatch({
                     type: "hit",
                     payload: {
@@ -211,7 +195,6 @@ export default function actions(projectile) {
                 })
             }
             else if (currentCD !== 0 && currentCD !== maxCD) {
-                console.log("Attack is on cd")
                 const newCD = currentCD + 1;
                 store.dispatch({
                     type: "hit",
@@ -221,7 +204,6 @@ export default function actions(projectile) {
                 })
             }
             else if (currentCD == maxCD) {
-                console.log("CD reset")
                 store.dispatch({
                     type: "hit",
                     payload: {

@@ -8,6 +8,7 @@ export default function handleMovement(player) {
     function getNewPosition(oldPos, direction) {
 
         switch (direction) {
+            default: return ""
             case "West":
                 return [oldPos[0] - spriteSize, oldPos[1]]
             case "East":
@@ -22,6 +23,7 @@ export default function handleMovement(player) {
     //function to display different character
     function getSpriteLocation(direction, walkIndex) {
         switch (direction) {
+            default: return ""
             case "West":
                 return `${spriteSize * walkIndex}px ${spriteSize * 2}px`
             case "East":
@@ -87,11 +89,12 @@ export default function handleMovement(player) {
         let left = store.getState().player.left
 
         switch (direction) {
+            default: return ""
             case "South":
                 if (top !== (-680)) {
                     const newTop = top - 40
                     return newValues = [left, newTop]
-                } 
+                }
                 else {
                     return newValues = [left, top]
                 }
@@ -99,7 +102,7 @@ export default function handleMovement(player) {
                 if (top !== 80) {
                     const newTop = top + 40
                     return newValues = [left, newTop]
-                } 
+                }
                 else {
                     return newValues = [left, top]
                 }
@@ -107,7 +110,7 @@ export default function handleMovement(player) {
                 if (left !== 360) {
                     const newLeft = left + 40
                     return newValues = [newLeft, top]
-                } 
+                }
                 else {
                     return newValues = [left, top]
                 }
@@ -115,7 +118,7 @@ export default function handleMovement(player) {
                 if (left !== (-1240)) {
                     const newLeft = left - 40
                     return newValues = [newLeft, top]
-                } 
+                }
                 else {
                     return newValues = [left, top]
                 }
@@ -144,11 +147,10 @@ export default function handleMovement(player) {
     }
 
     const path = window.location.href.split("/")
-    console.log(path)
-    if (path[3] === "game") {
-        window.addEventListener("keydown", (e) => {
-            handleKeyDown(e);
-        })
-    }
+
+    window.addEventListener("keydown", (e) => {
+        handleKeyDown(e);
+    })
+
     return player
 }
